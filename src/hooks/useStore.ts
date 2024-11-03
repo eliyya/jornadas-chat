@@ -71,6 +71,7 @@ export function useStore<SomeStore extends Store>(
                       emit(snapshotRef, onChange),
                   )
                 : store.listen(emit(snapshotRef, onChange)),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         deps,
     )
     let get = () => snapshotRef.current
