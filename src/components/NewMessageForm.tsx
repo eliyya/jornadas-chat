@@ -1,16 +1,20 @@
 'use client'
 
 import { createMessage } from '@/stores/messages'
+import { GithubSuccesResponse } from '@/types'
 import { useTransition } from 'react'
 
-export function NewMessageForm() {
+interface NewMessageFormProps {
+    user: GithubSuccesResponse
+}
+export function NewMessageForm({ user }: NewMessageFormProps) {
     const [isPending, startTransition] = useTransition()
     return (
         <form
             className="flex gap-2"
             action={async data => {
                 startTransition(async () => {
-                    createMessage(data.get('message') as string)
+                    createMessage(data.get('message') as string, user.login)
                 })
             }}
         >

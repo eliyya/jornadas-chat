@@ -16,7 +16,7 @@ export default async function ChatPage() {
                 <MessageList />
             </div>
             <div className="sticky bottom-0 -mx-2 py-2 pb-10 px-2">
-                <NewMessageForm />
+                <NewMessageForm user={user} />
             </div>
         </div>
     )
