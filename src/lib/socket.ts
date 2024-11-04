@@ -24,6 +24,7 @@ class Socket {
         return new Promise((resolve, reject) => {
             this.instance = io(process.env.NEXT_PUBLIC_WEBSOCKET_URL, {
                 transports: ['websocket'],
+                rejectUnauthorized: false,
             })
             console.log('connect')
             this.instance.on('connect', async () => {
