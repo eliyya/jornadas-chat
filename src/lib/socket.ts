@@ -1,4 +1,4 @@
-import { Message } from '@/stores/messages'
+import { Message } from '@/lib/messages'
 import { GithubSuccesResponse } from '@/types'
 import { io, Socket as IOSocket } from 'socket.io-client'
 

@@ -1,7 +1,6 @@
 'use client'
 
-import { useStore } from '@/hooks/useStore'
-import { $messages } from '@/stores/messages'
+import { $messages, useStore } from '@/lib/messages'
 import { Message } from './Message'
 import { useEffect } from 'react'
 import { socket } from '@/lib/socket'

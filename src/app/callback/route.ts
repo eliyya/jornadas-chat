@@ -1,6 +1,5 @@
 import { COOKIES_NAME } from '@/lib/constants'
 import { NextRequest, NextResponse } from 'next/server'
-import { SignJWT } from 'jose'
 
 export async function GET(request: NextRequest) {
     const code = request.nextUrl.searchParams.get('code')

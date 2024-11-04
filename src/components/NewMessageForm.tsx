@@ -1,6 +1,6 @@
 'use client'
 
-import { createMessage } from '@/stores/messages'
+import { createMessage } from '@/lib/messages'
 import { GithubSuccesResponse } from '@/types'
 import { useTransition } from 'react'
 

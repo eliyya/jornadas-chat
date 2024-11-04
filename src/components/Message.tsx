@@ -1,4 +1,4 @@
-import { Message as IMessage } from '@/stores/messages'
+import { Message as IMessage } from '@/lib/messages'
 
 interface MessageProps {
     message: IMessage
