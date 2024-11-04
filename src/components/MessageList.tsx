@@ -4,7 +4,7 @@ import { useStore } from '@/hooks/useStore'
 import { $messages } from '@/stores/messages'
 import { Message } from './Message'
 import { useEffect } from 'react'
-import { authenticateSocket } from '@/lib/socket'
+import { socket } from '@/lib/socket'
 import { getToken } from '@/actions/auth'
 import { GithubSuccesResponse } from '@/types'
 
@@ -13,13 +13,15 @@ interface MessageListProps {
 }
 export function MessageList({ user }: MessageListProps) {
     const messages = useStore($messages)
+
     useEffect(() => {
         const executeAsync = async () => {
             const token = (await getToken())!
-            await authenticateSocket(token)
+            await socket.createInstance(token).catch(e => console.log(e))
         }
         executeAsync()
     }, [])
+
     return (
         <main className="flex h-full flex-col justify-end gap-2 py-4 pl-8">
             {messages.map((message, i) => {

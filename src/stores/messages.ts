@@ -1,8 +1,15 @@
 'use client'
 
-import { Message } from '@/components/Message'
 import { socket } from '@/lib/socket'
 import { atom } from 'nanostores'
+
+export interface Message {
+    id: string
+    username: string
+    avatar?: string
+    content: string
+    createdAt: string
+}
 
 export const $messages = atom<Message[]>([])
 
@@ -19,4 +26,5 @@ export const createMessage = async (message: string, username: string) => {
     }
     socket.emit('sendMessage', body)
     addMessage(body)
+    console.log(body)
 }

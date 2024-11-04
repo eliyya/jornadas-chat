@@ -1,13 +1,7 @@
-export interface Message {
-    id: string
-    username: string
-    avatar?: string
-    content: string
-    createdAt: string
-}
+import { Message as IMessage } from '@/stores/messages'
 
 interface MessageProps {
-    message: Message
+    message: IMessage
     mine: boolean
     showName: boolean
     showAvatar: boolean

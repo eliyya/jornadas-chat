@@ -14,7 +14,10 @@ export function NewMessageForm({ user }: NewMessageFormProps) {
             className="flex gap-2"
             action={async data => {
                 startTransition(async () => {
-                    createMessage(data.get('message') as string, user.login)
+                    await createMessage(
+                        data.get('message') as string,
+                        user.login,
+                    )
                 })
             }}
         >
