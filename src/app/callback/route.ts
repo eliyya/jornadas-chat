@@ -39,9 +39,7 @@ export async function GET(request: NextRequest) {
                 Authorization: `Bearer ${accessToken}`,
             },
         }).then(r => r.json())
-        const response = NextResponse.redirect(
-            new URL('/chat', request.nextUrl),
-        )
+        const response = NextResponse.redirect(new URL('/', request.nextUrl))
         response.cookies.set(COOKIES_NAME.SESSION, accessToken)
         return response
     } catch (error) {
