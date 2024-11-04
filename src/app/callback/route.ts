@@ -29,6 +29,8 @@ export async function GET(request: NextRequest) {
         const accessToken = tokenData.access_token
 
         if (!accessToken) {
+            console.log('No TOKEN', tokenData)
+
             return NextResponse.json(
                 { error: 'No se pudo obtener el token de acceso' },
                 { status: 400 },

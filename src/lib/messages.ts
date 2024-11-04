@@ -20,10 +20,6 @@ export interface Message {
 
 export const $messages = atom<Message[]>([])
 
-export const addMessage = (message: Message) => {
-    $messages.set([...$messages.get(), message])
-}
-
 export const createMessage = async (message: string, username: string) => {
     const body = {
         content: message,
@@ -32,7 +28,7 @@ export const createMessage = async (message: string, username: string) => {
         username,
     }
     socket.emit('sendMessage', body)
-    addMessage(body)
+    $messages.set([...$messages.get(), body])
     console.log(body)
 }
 
