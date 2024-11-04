@@ -3,12 +3,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest) {
     const code = request.nextUrl.searchParams.get('code')
-    if (!code) {
-        return NextResponse.json(
-            { error: 'No se recibió el código de autorización' },
-            { status: 400 },
-        )
-    }
+    if (!code) return NextResponse.redirect(new URL('/', request.nextUrl))
 
     try {
         const tokenData = await fetch(
@@ -20,29 +15,23 @@ export async function GET(request: NextRequest) {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    client_id: process.env.GITHUB_CLIENT_ID,
+                    client_id: process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID,
                     client_secret: process.env.GITHUB_CLIENT_SECRET,
                     code,
                 }),
             },
         ).then(r => r.json())
-        const accessToken = tokenData.access_token
 
-        if (!accessToken) {
+        if (!tokenData.access_token) {
             console.log('No TOKEN', tokenData)
-
             return NextResponse.json(
                 { error: 'No se pudo obtener el token de acceso' },
                 { status: 400 },
             )
         }
-        const userData = await fetch('https://api.github.com/user', {
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-            },
-        }).then(r => r.json())
+
         const response = NextResponse.redirect(new URL('/', request.nextUrl))
-        response.cookies.set(COOKIES_NAME.SESSION, accessToken)
+        response.cookies.set(COOKIES_NAME.SESSION, tokenData.access_token)
         return response
     } catch (error) {
         console.error('Error al autenticar con GitHub:', error)
