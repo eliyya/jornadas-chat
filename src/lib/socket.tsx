@@ -1,12 +1,14 @@
+'use client'
 import { Message } from '@/lib/messages'
 import { GithubSuccesResponse } from '@/types'
+import { createContext, ReactNode, useContext } from 'react'
 import { io, Socket as IOSocket } from 'socket.io-client'
 
 interface EventsListenerMap {
     // [event: string]: (...args: any[]) => void
     authSuccess: (data: { message: string; user: GithubSuccesResponse }) => any
     authError: (data: { message: string }) => any
-    message(data: { username: string; message: string }): any
+    message(data: Message): any
 }
 
 type kyes = EventsListenerMap['authSuccess']
@@ -16,12 +18,12 @@ interface EventsEmitMap {
     auth: (token: string) => any
     sendMessage: (message: Message) => any
 }
-class Socket {
+export class Socket {
     instance?: IOSocket<EventsListenerMap, EventsEmitMap>
     constructor() {}
 
     async createInstance(token: string) {
-        return new Promise((resolve, reject) => {
+        return new Promise<this>((resolve, reject) => {
             this.instance = io(process.env.NEXT_PUBLIC_WEBSOCKET_URL, {
                 transports: ['websocket'],
                 rejectUnauthorized: false,
@@ -45,6 +47,10 @@ class Socket {
         this.instance?.emit(ev, ...args)
     }
 
+    onMessage(cb: EventsListenerMap['message']) {
+        this.instance?.on('message', cb)
+    }
+
     authenticateSocket(token: string) {
         return new Promise<IOSocket<EventsListenerMap, EventsEmitMap>>(
             (resolve, reject) => {
@@ -66,10 +72,25 @@ class Socket {
     }
 }
 
-declare const globalThis: {
-    socketGlobal: Socket
-} & typeof global
+const SocketContext = createContext<Socket | null>(null)
 
-const socket = globalThis.socketGlobal ?? new Socket()
-if (process.env.NODE_ENV !== 'production') globalThis.socketGlobal = socket
-export { socket }
+interface SocketProviderProps {
+    children: ReactNode
+}
+export function SocketProvider({ children }: SocketProviderProps) {
+    const socket = new Socket()
+
+    return (
+        <SocketContext.Provider value={socket}>
+            {children}
+        </SocketContext.Provider>
+    )
+}
+
+export const useSocket = () => {
+    const context = useContext(SocketContext)
+    if (!context) {
+        throw new Error('useSocket must be used within a SocketProvider')
+    }
+    return context
+}

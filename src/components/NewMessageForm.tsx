@@ -1,6 +1,7 @@
 'use client'
 
 import { createMessage } from '@/lib/messages'
+import { useSocket } from '@/lib/socket'
 import { GithubSuccesResponse } from '@/types'
 import { useTransition } from 'react'
 
@@ -9,15 +10,18 @@ interface NewMessageFormProps {
 }
 export function NewMessageForm({ user }: NewMessageFormProps) {
     const [isPending, startTransition] = useTransition()
+    const socket = useSocket()
     return (
         <form
             className="flex gap-2"
             action={async data => {
                 startTransition(async () => {
-                    await createMessage(
-                        data.get('message') as string,
-                        user.login,
-                    )
+                    await createMessage({
+                        message: data.get('message') as string,
+                        socket,
+                        username: user.login,
+                        avatar: user.avatar_url,
+                    })
                 })
             }}
         >

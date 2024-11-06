@@ -1,4 +1,5 @@
 import { Message as IMessage } from '@/lib/messages'
+import Image from 'next/image'
 
 interface MessageProps {
     message: IMessage
@@ -7,6 +8,11 @@ interface MessageProps {
     showAvatar: boolean
 }
 export function Message({ message, showName, mine, showAvatar }: MessageProps) {
+    const getAvatar = (av: string) => {
+        const baseUrl = new URL(av)
+        baseUrl.searchParams.append('size', '36')
+        return baseUrl.toString()
+    }
     return (
         <div
             className={`relative flex max-w-[85%] flex-col gap-1 rounded-md border p-2 pb-1 shadow md:max-w-[66%] text-black ${
@@ -18,23 +24,13 @@ export function Message({ message, showName, mine, showAvatar }: MessageProps) {
             {showAvatar && (
                 <div className="absolute bottom-0 left-0 h-8 w-8 -translate-x-[calc(100%+8px)]">
                     <div className="relative">
-                        <svg
-                            width="1em"
-                            height="1em"
-                            viewBox="0 0 15 15"
-                            className="h-full w-full text-gray-500"
-                        >
-                            <path
-                                fill="currentColor"
-                                d="M5 5.5a2.5 2.5 0 1 1 5 0a2.5 2.5 0 0 1-5 0Z"
-                            />
-                            <path
-                                fill="currentColor"
-                                fillRule="evenodd"
-                                d="M7.5 0a7.5 7.5 0 1 0 0 15a7.5 7.5 0 0 0 0-15ZM1 7.5a6.5 6.5 0 1 1 10.988 4.702A3.5 3.5 0 0 0 8.5 9h-2a3.5 3.5 0 0 0-3.488 3.202A6.482 6.482 0 0 1 1 7.5Z"
-                                clipRule="evenodd"
-                            />
-                        </svg>
+                        <Image
+                            src={getAvatar(message.avatar)}
+                            className="rounded-full"
+                            alt="PFP"
+                            width={36}
+                            height={36}
+                        />
                     </div>
                 </div>
             )}

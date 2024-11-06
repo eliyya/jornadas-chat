@@ -1,6 +1,6 @@
 'use client'
 
-import { socket } from '@/lib/socket'
+import { Socket } from '@/lib/socket'
 import { listenKeys, Store, StoreValue, atom } from 'nanostores'
 import {
     useCallback,
@@ -13,22 +13,33 @@ import {
 export interface Message {
     id: string
     username: string
-    avatar?: string
+    avatar: string
     content: string
     createdAt: string
 }
 
 export const $messages = atom<Message[]>([])
 
-export const createMessage = async (message: string, username: string) => {
+export function createMessage({
+    message,
+    socket,
+    username,
+    avatar,
+}: {
+    message: string
+    username: string
+    socket: Socket
+    avatar: string
+}) {
     const body = {
         content: message,
         createdAt: new Date().toString(),
         id: crypto.randomUUID(),
         username,
+        avatar,
     }
     socket.emit('sendMessage', body)
-    $messages.set([...$messages.get(), body])
+    $messages.set([...$messages.get().filter(m => m.id !== body.id), body])
     console.log(body)
 }
 
