@@ -5,18 +5,19 @@ import { Message } from './Message'
 import { useEffect } from 'react'
 import { useSocket } from '@/lib/socket'
 import { getToken } from '@/actions/auth'
+import { useSession } from '@/lib/session'
 
 interface MessageListProps {
     user: string
 }
 export function MessageList({ user }: MessageListProps) {
     const messages = useStore($messages)
+    const { username } = useSession()
     const socket = useSocket()
 
     useEffect(() => {
         const executeAsync = async () => {
-            const token = (await getToken())!
-            const s = await socket.createInstance(token)
+            const s = await socket.createInstance(username!)
             s.onMessage(data => {
                 $messages.set([
                     ...$messages.get().filter(m => m.id !== data.id),
@@ -25,7 +26,7 @@ export function MessageList({ user }: MessageListProps) {
             })
         }
         executeAsync()
-    }, [socket])
+    }, [socket, username])
 
     return (
         <main className="flex h-full flex-col justify-end gap-2 py-4 pl-8">
