@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import { SessionProvider } from '@/lib/session'
 
 export const metadata: Metadata = {
     title: 'Create Next App',
@@ -15,7 +14,8 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={`antialiased`}>
-                <SessionProvider>{children}</SessionProvider>
+                {/* TODO: envolve provider */}
+                {children}
             </body>
         </html>
     )

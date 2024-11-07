@@ -1,24 +1,14 @@
 'use client'
 
-import { useSession } from '@/lib/session'
-
 export function Login() {
-    const { setUsername, username, setAvatar, avatar } = useSession()
+    // TODO: get session
     return (
         <form
             action={d => {
-                const usern = d.get('username') as string
-                setUsername(usern)
-                fetch('https://api.github.com/users/' + usern, {
-                    headers: {
-                        'Content-Type': 'application/json', // Tipo de contenido
-                    },
-                })
-                    .then(r => r.json())
-                    .then(({ avatar_url }) => {
-                        setAvatar(avatar_url)
-                    })
-                    .catch(() => null)
+                // TODO: get username
+                // TODO: set session
+                // TODO: get avatar
+                // TODO: set avatar
             }}
             className="flex gap-1"
         >

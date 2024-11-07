@@ -25,6 +25,7 @@ export class Socket {
 
     async createInstance(username: string) {
         return new Promise<this>((resolve, reject) => {
+            // connect to the socket
             this.instance = io(process.env.NEXT_PUBLIC_WEBSOCKET_URL, {
                 transports: ['websocket'],
                 rejectUnauthorized: false,
@@ -32,6 +33,7 @@ export class Socket {
             console.log('connect')
             this.instance.on('connect', async () => {
                 console.log('conected')
+                // authenticate
                 await this.authenticateSocket(username)
                 resolve(this)
             })
@@ -56,6 +58,7 @@ export class Socket {
         return new Promise<IOSocket<EventsListenerMap, EventsEmitMap>>(
             (resolve, reject) => {
                 if (!this.instance) reject(new Error("Don't have an instance"))
+                // send credentials
                 this.instance?.emit('auth', username)
                 console.log('trying authenticate')
 

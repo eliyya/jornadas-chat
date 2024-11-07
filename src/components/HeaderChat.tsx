@@ -1,18 +1,15 @@
 'use client'
-import { logout } from '@/actions/auth'
 import Image from 'next/image'
-import { useState, useTransition } from 'react'
+import { useState } from 'react'
 
 interface HeaderChatProps {
     user: string
     avatar?: string
 }
 export function HeaderChat({
-    user,
     avatar = '/LOGO_JORNADAS_SIN.png',
 }: HeaderChatProps) {
     const [showMenu, toggleMenu] = useState(false)
-    const [isPending, startTransition] = useTransition()
 
     return (
         <div className="rounded-b-lg border-gray-200 bg-white p-4 shadow-md flex items-center justify-between">
@@ -52,15 +49,12 @@ export function HeaderChat({
                             <form
                                 className="pt-1"
                                 action={() => {
-                                    startTransition(async () => {
-                                        await logout()
-                                    })
+                                    // TODO: logout
                                 }}
                             >
                                 <button
                                     type="submit"
                                     className="block w-full pr-3 pl-6 py-1 text-left text-sm leading-6 text-gray-900 hover:bg-gray-100 disabled:text-gray-600"
-                                    disabled={isPending}
                                 >
                                     Sign Out
                                 </button>
