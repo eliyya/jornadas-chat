@@ -3,12 +3,11 @@
 import { $messages, useStore } from '@/lib/messages'
 import { Message } from './Message'
 import { useEffect } from 'react'
-import { Socket, useSocket } from '@/lib/socket'
+import { useSocket } from '@/lib/socket'
 import { getToken } from '@/actions/auth'
-import { GithubSuccesResponse } from '@/types'
 
 interface MessageListProps {
-    user: GithubSuccesResponse
+    user: string
 }
 export function MessageList({ user }: MessageListProps) {
     const messages = useStore($messages)
@@ -31,7 +30,9 @@ export function MessageList({ user }: MessageListProps) {
     return (
         <main className="flex h-full flex-col justify-end gap-2 py-4 pl-8">
             {messages.map((message, i) => {
-                const mine = message.username === user.login
+                console.log({ message }, user)
+
+                const mine = message.username === user
                 const showName =
                     !mine && messages[i - 1]?.username !== message.username
                 const showAvatar =

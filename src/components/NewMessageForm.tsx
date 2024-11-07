@@ -2,13 +2,13 @@
 
 import { createMessage } from '@/lib/messages'
 import { useSocket } from '@/lib/socket'
-import { GithubSuccesResponse } from '@/types'
 import { useTransition } from 'react'
 
 interface NewMessageFormProps {
-    user: GithubSuccesResponse
+    user: string
+    avatar?: string
 }
-export function NewMessageForm({ user }: NewMessageFormProps) {
+export function NewMessageForm({ user, avatar }: NewMessageFormProps) {
     const [isPending, startTransition] = useTransition()
     const socket = useSocket()
     return (
@@ -19,8 +19,8 @@ export function NewMessageForm({ user }: NewMessageFormProps) {
                     await createMessage({
                         message: data.get('message') as string,
                         socket,
-                        username: user.login,
-                        avatar: user.avatar_url,
+                        username: user,
+                        avatar,
                     })
                 })
             }}

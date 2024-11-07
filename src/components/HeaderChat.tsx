@@ -1,21 +1,19 @@
 'use client'
 import { logout } from '@/actions/auth'
-import { GithubSuccesResponse } from '@/types'
 import Image from 'next/image'
 import { useState, useTransition } from 'react'
 
 interface HeaderChatProps {
-    user: GithubSuccesResponse
+    user: string
+    avatar?: string
 }
-export function HeaderChat({ user }: HeaderChatProps) {
+export function HeaderChat({
+    user,
+    avatar = '/LOGO_JORNADAS_SIN.png',
+}: HeaderChatProps) {
     const [showMenu, toggleMenu] = useState(false)
     const [isPending, startTransition] = useTransition()
 
-    const getAvatar = (user: GithubSuccesResponse) => {
-        const baseUrl = new URL(user.avatar_url)
-        baseUrl.searchParams.append('size', '36')
-        return baseUrl.toString()
-    }
     return (
         <div className="rounded-b-lg border-gray-200 bg-white p-4 shadow-md flex items-center justify-between">
             <div className="flex items-center gap-3 truncate font-semibold text-black">
@@ -31,7 +29,7 @@ export function HeaderChat({ user }: HeaderChatProps) {
                         <div className="h-9 w-9 hover:opacity-80 relative">
                             <Image
                                 className="rounded-full"
-                                src={getAvatar(user)}
+                                src={avatar}
                                 alt="PFP"
                                 width={36}
                                 height={36}

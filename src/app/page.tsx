@@ -1,27 +1,27 @@
+'use client'
 import Image from 'next/image'
-import Link from 'next/link'
-import { getUser } from '@/actions/auth'
 import { HeaderChat } from '@/components/HeaderChat'
 import { MessageList } from '@/components/MessageList'
 import { NewMessageForm } from '@/components/NewMessageForm'
 import { SocketProvider } from '@/lib/socket'
 import { Login } from '@/components/Login'
+import { useSession } from '@/lib/session'
 
-export default async function Home() {
-    const user = await getUser()
+export default function Home() {
+    const { setUsername, username, setAvatar, avatar } = useSession()
     // Si esta logeado renderiza el chat
-    if (user)
+    if (username)
         return (
             <div className="relative flex min-h-screen sm:w-2/3 lg:w-1/2 w-full flex-col gap-3">
                 <SocketProvider>
                     <div className="sticky top-0 z-10 -mx-2 px-2">
-                        <HeaderChat user={user} />
+                        <HeaderChat user={username} />
                     </div>
                     <div className="flex-1">
-                        <MessageList user={user} />
+                        <MessageList user={username} />
                     </div>
                     <div className="sticky bottom-0 -mx-2 py-2 pb-10 px-2">
-                        <NewMessageForm user={user} />
+                        <NewMessageForm user={username} />
                     </div>
                 </SocketProvider>
             </div>

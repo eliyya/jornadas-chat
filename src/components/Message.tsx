@@ -8,11 +8,6 @@ interface MessageProps {
     showAvatar: boolean
 }
 export function Message({ message, showName, mine, showAvatar }: MessageProps) {
-    const getAvatar = (av: string) => {
-        const baseUrl = new URL(av)
-        baseUrl.searchParams.append('size', '36')
-        return baseUrl.toString()
-    }
     return (
         <div
             className={`relative flex max-w-[85%] flex-col gap-1 rounded-md border p-2 pb-1 shadow md:max-w-[66%] text-black ${
@@ -25,7 +20,7 @@ export function Message({ message, showName, mine, showAvatar }: MessageProps) {
                 <div className="absolute bottom-0 left-0 h-8 w-8 -translate-x-[calc(100%+8px)]">
                     <div className="relative">
                         <Image
-                            src={getAvatar(message.avatar)}
+                            src={message.avatar ?? '/LOGO_JORNADAS_SIN.png'}
                             className="rounded-full"
                             alt="PFP"
                             width={36}

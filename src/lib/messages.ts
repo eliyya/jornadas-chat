@@ -13,7 +13,7 @@ import {
 export interface Message {
     id: string
     username: string
-    avatar: string
+    avatar?: string
     content: string
     createdAt: string
 }
@@ -29,12 +29,12 @@ export function createMessage({
     message: string
     username: string
     socket: Socket
-    avatar: string
+    avatar?: string
 }) {
     const body = {
         content: message,
         createdAt: new Date().toString(),
-        id: crypto.randomUUID(),
+        id: `${Math.random() * 1000}`,
         username,
         avatar,
     }
