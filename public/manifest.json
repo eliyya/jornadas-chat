@@ -1,0 +1,17 @@
+{
+    "theme_color": "#000000",
+    "background_color": "#ffffff",
+    "display": "standalone",
+    "scope": "/",
+    "start_url": "/",
+    "name": "Jornadas Chat Multiplatform Web",
+    "short_name": "JornadasChat",
+    "description": "A simple multiplatform chat with web technology",
+    "icons": [
+        {
+            "src": "/LOGO_JORNADAS_SIN.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
